@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:graphview/GraphView.dart';
+import 'package:graphview/graph_view.dart';
 
 class TreeViewPage extends StatefulWidget {
   @override
@@ -56,15 +56,20 @@ class _TreeViewPageState extends State<TreeViewPage> {
                 initialValue: builder.orientation.toString(),
                 decoration: InputDecoration(labelText: "Orientation"),
                 onChanged: (text) {
-                  builder.orientation = int.tryParse(text) ?? 100;
+                  var orientation = int.tryParse(text);
+                  var picked = GraphOrientation.values.firstWhere(
+                      (element) => element.index == orientation,
+                      orElse: () => GraphOrientation.TopBottom);
+                  builder.orientation = picked;
                   this.setState(() {});
                 },
               ),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
-                final node12 = Node(rectangleWidget(r.nextInt(100)));
-                var edge = graph.getNodeAtPosition(r.nextInt(graph.nodeCount()));
+                final node12 = Node.widget(rectangleWidget(r.nextInt(100)));
+                var edge =
+                    graph.getNodeAtPosition(r.nextInt(graph.nodeCount()));
                 print(edge);
                 graph.addEdge(edge, node12);
                 setState(() {});
@@ -81,7 +86,8 @@ class _TreeViewPageState extends State<TreeViewPage> {
               maxScale: 5.6,
               child: GraphView(
                 graph: graph,
-                algorithm: BuchheimWalkerAlgorithm(builder, TreeEdgeRenderer(builder)),
+                algorithm:
+                    BuchheimWalkerAlgorithm(builder, TreeEdgeRenderer(builder)),
                 paint: Paint()
                   ..color = Colors.green
                   ..strokeWidth = 1
@@ -116,23 +122,25 @@ class _TreeViewPageState extends State<TreeViewPage> {
     );
   }
 
-  final Graph graph = Graph()..isTree = true;
+  final Graph graph = Graph.tree();
   BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
 
   @override
   void initState() {
-    final node1 = Node.Id(1);
-    final node2 = Node.Id(2);
-    final node3 = Node.Id(3);
-    final node4 = Node.Id(4);
-    final node5 = Node.Id(5);
-    final node6 = Node.Id(6);
-    final node8 = Node.Id(7);
-    final node7 = Node.Id(8);
-    final node9 = Node.Id(9);
-    final node10 = Node(rectangleWidget(10));  //using deprecated mechanism of directly placing the widget here
-    final node11 = Node(rectangleWidget(11));
-    final node12 = Node(rectangleWidget(12));
+    super.initState();
+    final node1 = Node.id(1);
+    final node2 = Node.id(2);
+    final node3 = Node.id(3);
+    final node4 = Node.id(4);
+    final node5 = Node.id(5);
+    final node6 = Node.id(6);
+    final node8 = Node.id(7);
+    final node7 = Node.id(8);
+    final node9 = Node.id(9);
+    final node10 = Node.widget(rectangleWidget(
+        10)); //using deprecated mechanism of directly placing the widget here
+    final node11 = Node.widget(rectangleWidget(11));
+    final node12 = Node.widget(rectangleWidget(12));
     graph.addEdge(node1, node2);
     graph.addEdge(node1, node3, paint: Paint()..color = Colors.red);
     graph.addEdge(node1, node4, paint: Paint()..color = Colors.blue);
@@ -149,6 +157,6 @@ class _TreeViewPageState extends State<TreeViewPage> {
       ..siblingSeparation = (100)
       ..levelSeparation = (150)
       ..subtreeSeparation = (150)
-      ..orientation = (BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM);
+      ..orientation = GraphOrientation.TopBottom;
   }
 }

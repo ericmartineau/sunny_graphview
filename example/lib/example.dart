@@ -28,7 +28,7 @@ class Home extends StatelessWidget {
       child: Scaffold(
         body: Center(
           child: Column(children: [
-            FlatButton(
+            TextButton(
                 onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -41,7 +41,7 @@ class Home extends StatelessWidget {
                   "Tree View (BuchheimWalker)",
                   style: TextStyle(color: Theme.of(context).primaryColor),
                 )),
-            FlatButton(
+            TextButton(
                 onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -54,7 +54,7 @@ class Home extends StatelessWidget {
                   "Graph Cluster View (FruchtermanReingold)",
                   style: TextStyle(color: Theme.of(context).primaryColor),
                 )),
-            FlatButton(
+            TextButton(
                 onPressed: () => Navigator.push(
                       context,
                       MaterialPageRoute(

@@ -113,7 +113,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
                 },
               ),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
                 final node12 = Node(rectangleWidget(r.nextInt(100)));
                 var edge = graph.getNodeAtPosition(r.nextInt(graph.nodeCount()));
@@ -173,15 +173,15 @@ class _TreeViewPageState extends State<TreeViewPage> {
 
   @override
   void initState() {
-    final node1 = Node.Id(1);
-    final node2 = Node.Id(2);
-    final node3 = Node.Id(3);
-    final node4 = Node.Id(4);
-    final node5 = Node.Id(5);
-    final node6 = Node.Id(6);
-    final node8 = Node.Id(7);
-    final node7 = Node.Id(8);
-    final node9 = Node.Id(9);
+    final node1 = Node.id(1);
+    final node2 = Node.id(2);
+    final node3 = Node.id(3);
+    final node4 = Node.id(4);
+    final node5 = Node.id(5);
+    final node6 = Node.id(6);
+    final node8 = Node.id(7);
+    final node7 = Node.id(8);
+    final node9 = Node.id(9);
     final node10 = Node(rectangleWidget(10));  //using deprecated mechanism of directly placing the widget here
     final node11 = Node(rectangleWidget(11));
     final node12 = Node(rectangleWidget(12));
@@ -210,7 +210,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
 You can use any widget inside the node:
 
 ```dart
-Node node = Node.Id(fromNodeId) ;
+Node node = Node.id(fromNodeId) ;
 
 builder: (Node node) {
                   // I can decide what widget should be shown here based on the id
@@ -295,7 +295,7 @@ Step 1, add the edges by using ids
   edges.forEach((element) {
       var fromNodeId = element['from'];
       var toNodeId = element['to'];
-      graph.addEdge(Node.Id(fromNodeId), Node.Id(toNodeId));
+      graph.addEdge(Node.id(fromNodeId), Node.id(toNodeId));
     });
 ```
 

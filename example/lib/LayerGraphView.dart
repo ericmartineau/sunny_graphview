@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:graphview/GraphView.dart';
+import 'package:graphview/graph_view.dart';
 
 class LayeredGraphViewPage extends StatefulWidget {
   @override
@@ -45,14 +45,14 @@ class _LayeredGraphViewPageState extends State<LayeredGraphViewPage> {
                 initialValue: builder.orientation.toString(),
                 decoration: InputDecoration(labelText: "Orientation"),
                 onChanged: (text) {
-                  builder.orientation = int.tryParse(text) ?? 100;
+                  builder.orientation = orientationOf(int.tryParse(text) ?? 1);
                   this.setState(() {});
                 },
               ),
             ),
-            RaisedButton(
+            ElevatedButton(
               onPressed: () {
-                final node12 = Node(rectangleWidget(r.nextInt(100)));
+                final node12 = Node.widget(rectangleWidget(r.nextInt(100)));
                 var edge = graph.getNodeAtPosition(r.nextInt(graph.nodeCount()));
                 print(edge);
                 graph.addEdge(edge, node12);
@@ -106,29 +106,30 @@ class _LayeredGraphViewPageState extends State<LayeredGraphViewPage> {
 
   @override
   void initState() {
-    final node1 = Node.Id(1);
-    final node2 = Node.Id(2);
-    final node3 = Node.Id(3);
-    final node4 = Node.Id(4);
-    final node5 = Node.Id(5);
-    final node6 = Node.Id(6);
-    final node8 = Node.Id(7);
-    final node7 = Node.Id(8);
-    final node9 = Node.Id(9);
-    final node10 = Node.Id(10);
-    final node11 = Node.Id(11);
-    final node12 = Node.Id(12);
-    final node13 = Node.Id(13);
-    final node14 = Node.Id(14);
-    final node15 = Node.Id(15);
-    final node16 = Node.Id(16);
-    final node17 = Node(rectangleWidget(17)); //using deprecated mechanism of directly placing the widget here
-    final node18 = Node(rectangleWidget(18));
-    final node19 = Node(rectangleWidget(19));
-    final node20 = Node(rectangleWidget(20));
-    final node21 = Node(rectangleWidget(21));
-    final node22 = Node(rectangleWidget(22));
-    final node23 = Node(rectangleWidget(23));
+    super.initState();
+    final node1 = Node.id(1);
+    final node2 = Node.id(2);
+    final node3 = Node.id(3);
+    final node4 = Node.id(4);
+    final node5 = Node.id(5);
+    final node6 = Node.id(6);
+    final node8 = Node.id(7);
+    final node7 = Node.id(8);
+    final node9 = Node.id(9);
+    final node10 = Node.id(10);
+    final node11 = Node.id(11);
+    final node12 = Node.id(12);
+    final node13 = Node.id(13);
+    final node14 = Node.id(14);
+    final node15 = Node.id(15);
+    final node16 = Node.id(16);
+    final node17 = Node.widget(rectangleWidget(17)); //using deprecated mechanism of directly placing the widget here
+    final node18 = Node.widget(rectangleWidget(18));
+    final node19 = Node.widget(rectangleWidget(19));
+    final node20 = Node.widget(rectangleWidget(20));
+    final node21 = Node.widget(rectangleWidget(21));
+    final node22 = Node.widget(rectangleWidget(22));
+    final node23 = Node.widget(rectangleWidget(23));
 
     graph.addEdge(node1, node13, paint: Paint()..color = Colors.red);
     graph.addEdge(node1, node21);
@@ -168,6 +169,6 @@ class _LayeredGraphViewPageState extends State<LayeredGraphViewPage> {
     builder
       ..nodeSeparation = (15)
       ..levelSeparation = (15)
-      ..orientation = SugiyamaConfiguration.ORIENTATION_LEFT_RIGHT;
+      ..orientation = GraphOrientation.LeftRight;
   }
 }

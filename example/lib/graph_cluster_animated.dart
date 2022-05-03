@@ -1,12 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:graphview/GraphView.dart';
-
+import 'package:graphview/graph_view.dart';
 
 class GraphScreen extends StatefulWidget {
-  Graph graph;
-  Algorithm algorithm;
+  final Graph graph;
+  final Algorithm algorithm;
   final Paint paint;
   GraphScreen(this.graph, this.algorithm, this.paint);
 
@@ -15,7 +14,6 @@ class GraphScreen extends StatefulWidget {
 }
 
 class _GraphScreenState extends State<GraphScreen> {
-
   bool animated = true;
 
   @override
@@ -43,6 +41,9 @@ class _GraphScreenState extends State<GraphScreen> {
           child: GraphView(
             graph: widget.graph,
             algorithm: widget.algorithm,
+            builder: (Node node) {
+              return node.widget ?? Container();
+            },
           )),
     );
   }

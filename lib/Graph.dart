@@ -1,40 +1,49 @@
 part of graphview;
 
 class Graph {
+  Graph({this.isTree = false});
+  Graph.tree() : isTree = true;
+
   final List<Node> _nodes = [];
   final List<Edge> _edges = [];
-  List<GraphObserver> graphObserver = [];
+  final Map<ValueKey, Node> _nodesById = {};
+  final bool isTree;
+  final List<GraphObserver> graphObserver = [];
 
-  List<Node> get nodes => _nodes; //  List<Node> nodes = _nodes;
-  List<Edge> get edges => _edges;
-
-  var isTree = false;
+  List<Edge> get edges => [..._edges];
+  List<Node> get nodes => [..._nodes];
 
   int nodeCount() => _nodes.length;
 
-  void addNode(Node node) {
-    // if (!_nodes.contains(node)) {
+  void addNode(Node node, {bool notify = true}) {
     _nodes.add(node);
-    notifyGraphObserver();
-    // }
+    _nodesById[node.key] = node;
+    if (notify) notifyGraphObserver();
   }
 
-  void addNodes(List<Node> nodes) => nodes.forEach((it) => addNode(it));
+  void addNodes(List<Node> nodes) {
+    nodes.forEach((it) => addNode(it, notify: false));
+    notifyGraphObserver();
+  }
 
   void removeNode(Node? node) {
-    if (!_nodes.contains(node)) {
-//            throw IllegalArgumentException("Unable to find node in graph.")
-    }
-
     if (isTree) {
       successorsOf(node).forEach((element) => removeNode(element));
     }
 
     _nodes.remove(node);
+    _nodesById.remove(node?.key);
 
     _edges
         .removeWhere((edge) => edge.source == node || edge.destination == node);
 
+    notifyGraphObserver();
+  }
+
+  void removeNodeById(dynamic id) {
+    var valueKey = id is ValueKey ? id : ValueKey(id);
+    var node = _nodesById[valueKey];
+    this.removeNode(node);
     notifyGraphObserver();
   }
 
@@ -47,34 +56,54 @@ class Graph {
     return edge;
   }
 
-  void addEdgeS(Edge edge) {
-    if (_nodes.contains(edge.source)) {
-      edge.source = _nodes.firstWhere((element) => element == edge.source);
+  void addEdgeS(Edge edge, {bool notify = true}) {
+    var changed = false;
+    if (_nodesById.containsKey(edge.source.key)) {
+      edge.source = _nodesById[edge.source.key]!;
     } else {
-      _nodes.add(edge.source);
+      changed = true;
+      addNode(edge.source, notify: false);
     }
-    if (_nodes.contains(edge.destination)) {
-      edge.destination =
-          _nodes.firstWhere((element) => element == edge.destination);
+    if (_nodesById.containsKey(edge.destination.key)) {
+      edge.destination = _nodesById[edge.destination.key]!;
     } else {
-      _nodes.add(edge.destination);
+      changed = true;
+      addNode(edge.destination, notify: false);
     }
 
     if (!_edges.contains(edge)) {
       _edges.add(edge);
-      notifyGraphObserver();
+      changed = true;
     }
+    if (changed && notify) notifyGraphObserver();
   }
 
-  void addEdges(List<Edge> edges) => edges.forEach((it) => addEdgeS(it));
+  void addEdges(List<Edge> edges) {
+    edges.forEach((it) => addEdgeS(it, notify: false));
+    notifyGraphObserver();
+  }
 
-  void removeEdge(Edge edge) => _edges.remove(edge);
+  void removeEdge(Edge edge, {bool notify = true}) {
+    _edges.remove(edge);
+    if (notify) notifyGraphObserver();
+  }
 
-  void removeEdges(List<Edge> edges) => edges.forEach((it) => removeEdge(it));
+  void removeEdges(List<Edge> edges) {
+    edges.forEach((it) => removeEdge(it, notify: false));
+    notifyGraphObserver();
+  }
+
+  void clear() {
+    _edges.clear();
+    _nodes.clear();
+    _nodesById.clear();
+    notifyGraphObserver();
+  }
 
   void removeEdgeFromPredecessor(Node? predecessor, Node? current) {
     _edges.removeWhere(
         (edge) => edge.source == predecessor && edge.destination == current);
+    notifyGraphObserver();
   }
 
   bool hasNodes() => _nodes.isNotEmpty;
@@ -99,24 +128,20 @@ class Graph {
       .map((edge) => edge.source)
       .toList();
 
-  bool contains({Node? node, Edge? edge}) =>
-      node != null && _nodes.contains(node) ||
-      edge != null && _edges.contains(edge);
+  bool containsKey(value) {
+    return value is ValueKey
+        ? _nodesById[value] != null
+        : _nodesById[ValueKey(value)] != null;
+  }
 
-//  bool contains(Edge edge) => _edges.contains(edge);
+  bool contains({Node? node, Edge? edge}) =>
+      _nodesById.containsKey(node?.key) ||
+      (edge != null && _edges.contains(edge));
 
   bool containsData(data) => _nodes.any((element) => element.data == data);
 
   Node getNodeAtPosition(int position) {
-    if (position < 0) {
-//            throw IllegalArgumentException("position can't be negative")
-    }
-
-    final size = _nodes.length;
-    if (position >= size) {
-//            throw IndexOutOfBoundsException("Position: $position, Size: $size")
-    }
-
+    assert(position >= 0);
     return _nodes[position];
   }
 
@@ -124,17 +149,17 @@ class Graph {
   Node getNodeAtUsingData(Widget data) =>
       _nodes.firstWhere((element) => element.data == data);
 
-  Node getNodeUsingKey(ValueKey valueKey) =>
-      _nodes.firstWhere((element) => element.key == valueKey);
+  Node getNodeUsingKey(ValueKey valueKey) => _nodesById[valueKey]!;
 
-  Node getNodeUsingId(int id) =>
-      _nodes.firstWhere((element) => element.key == ValueKey(id));
+  Node getNodeUsingId(int id) => _nodesById[ValueKey(id)]!;
 
   List<Edge> getOutEdges(Node node) =>
       _edges.where((element) => element.source == node).toList();
 
-  List<Edge> getInEdges(Node node) =>
-      _edges.where((element) => element.destination == node).toList();
+  List<Edge> getInEdges(Node node) => [
+        for (var e in _edges)
+          if (e.destination == node) e,
+      ];
 
   void notifyGraphObserver() => graphObserver.forEach((element) {
         element.notifyGraphInvalidated();
@@ -142,42 +167,22 @@ class Graph {
 }
 
 class Node {
-  ValueKey? key;
-
-  @Deprecated('Please use the builder and id mechanism to build the widgets')
-  Widget? data;
-
-  Node(this.data, {Key? key}) {
-    this.key = ValueKey(key?.hashCode ?? data.hashCode);
-  }
-
-  Node.Id(dynamic id) {
-    key = ValueKey(id);
-  }
+  final ValueKey key;
+  final dynamic data;
 
   Size size = Size(0, 0);
-
   Offset position = Offset(0, 0);
 
-  double get height => size.height;
+  Node._({required this.key, this.data});
 
-  double get width => size.width;
+  Node.widget(Widget widget, {ValueKey? key})
+      : this._(key: key ?? ValueKey(widget.hashCode), data: widget);
 
-  double get x => position.dx;
-
-  double get y => position.dy;
-
-  set y(double value) {
-    position = Offset(position.dx, value);
-  }
-
-  set x(double value) {
-    position = Offset(value, position.dy);
-  }
+  Node.id(dynamic id, [this.data]) : key = ValueKey(id);
 
   @override
   bool operator ==(Object other) =>
-      identical(this, other) || other is Node && hashCode == other.hashCode;
+      identical(this, other) || other is Node && key == other.key;
 
   @override
   int get hashCode => key.hashCode;
@@ -185,6 +190,23 @@ class Node {
   @override
   String toString() {
     return 'Node{position: $position, key: $key, _size: $size}';
+  }
+}
+
+extension NodeExt on Node {
+  double get height => size.height;
+  double get width => size.width;
+  double get x => position.dx;
+  double get y => position.dy;
+
+  Widget? get widget => data is Widget ? data as Widget : null;
+
+  set y(double value) {
+    position = Offset(position.dx, value);
+  }
+
+  set x(double value) {
+    position = Offset(value, position.dy);
   }
 }
 

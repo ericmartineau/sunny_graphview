@@ -1,7 +1,5 @@
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:graphview/GraphView.dart';
+import 'package:graphview/graph_view.dart';
 
 class TreeViewPageFromJson extends StatefulWidget {
   @override
@@ -9,7 +7,6 @@ class TreeViewPageFromJson extends StatefulWidget {
 }
 
 class _TreeViewPageFromJsonState extends State<TreeViewPageFromJson> {
-
   var json = {
     "nodes": [
       {"id": 1, "label": 'circle'},
@@ -79,7 +76,11 @@ class _TreeViewPageFromJsonState extends State<TreeViewPageFromJson> {
                 initialValue: builder.orientation.toString(),
                 decoration: InputDecoration(labelText: "Orientation"),
                 onChanged: (text) {
-                  builder.orientation = int.tryParse(text) ?? 100;
+                  var orientation = int.tryParse(text);
+                  var picked = GraphOrientation.values.firstWhere(
+                      (element) => element.index == orientation,
+                      orElse: () => GraphOrientation.TopBottom);
+                  builder.orientation = picked;
                   this.setState(() {});
                 },
               ),
@@ -94,7 +95,8 @@ class _TreeViewPageFromJsonState extends State<TreeViewPageFromJson> {
               maxScale: 5.6,
               child: GraphView(
                 graph: graph,
-                algorithm: BuchheimWalkerAlgorithm(builder, TreeEdgeRenderer(builder)),
+                algorithm:
+                    BuchheimWalkerAlgorithm(builder, TreeEdgeRenderer(builder)),
                 paint: Paint()
                   ..color = Colors.green
                   ..strokeWidth = 1
@@ -103,7 +105,8 @@ class _TreeViewPageFromJsonState extends State<TreeViewPageFromJson> {
                   // I can decide what widget should be shown here based on the id
                   var a = node.key.value as int;
                   var nodes = json['nodes'];
-                  var nodeValue = nodes.firstWhere((element) => element['id'] == a);
+                  var nodeValue =
+                      nodes.firstWhere((element) => element['id'] == a);
                   return rectangleWidget(nodeValue['label'] as String);
                 },
               )),
@@ -129,22 +132,23 @@ class _TreeViewPageFromJsonState extends State<TreeViewPageFromJson> {
     );
   }
 
-  final Graph graph = Graph()..isTree = true;
+  final Graph graph = Graph.tree();
   BuchheimWalkerConfiguration builder = BuchheimWalkerConfiguration();
 
   @override
   void initState() {
+    super.initState();
     var edges = json['edges'];
     edges.forEach((element) {
       var fromNodeId = element['from'];
       var toNodeId = element['to'];
-      graph.addEdge(Node.Id(fromNodeId), Node.Id(toNodeId));
+      graph.addEdge(Node.id(fromNodeId), Node.id(toNodeId));
     });
 
     builder
       ..siblingSeparation = (100)
       ..levelSeparation = (150)
       ..subtreeSeparation = (150)
-      ..orientation = (BuchheimWalkerConfiguration.ORIENTATION_TOP_BOTTOM);
+      ..orientation = GraphOrientation.TopBottom;
   }
 }

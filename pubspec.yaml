@@ -1,7 +1,8 @@
-name: graphview
+name: sunny_graphview
 description:  GraphView is used to display data in graph structures. It can display Tree layout, Directed and Layered graph. Useful for Family Tree, Hierarchy View.
-version: 1.0.0-nullsafety.1
-homepage: https://github.com/nabil6391/graphview
+version: 1.0.1
+publish_to: https://dart.cloudsmith.io/edspuzzles/edspuzzle-public
+homepage: https://github.com/ericmartineau/sunny_graphview
 
 environment:
   sdk: '>=2.12.0 <3.0.0'

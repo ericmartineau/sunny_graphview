@@ -21,17 +21,14 @@ class SugiyamaAlgorithm extends Algorithm {
   Widget get dummyText => Text("Dummy ${nodeCount++}");
 
   bool isVertical() {
-    var orientation = configuration.orientation;
-    return orientation == SugiyamaConfiguration.ORIENTATION_TOP_BOTTOM ||
-        orientation == SugiyamaConfiguration.ORIENTATION_BOTTOM_TOP;
+    return configuration.orientation.isVertical;
   }
 
   bool needReverseOrder() {
-    var orientation = configuration.orientation;
-    return orientation == SugiyamaConfiguration.ORIENTATION_BOTTOM_TOP ||
-        orientation == SugiyamaConfiguration.ORIENTATION_RIGHT_LEFT;
+    return configuration.orientation.isReverse;
   }
 
+  @override
   Size run(Graph? graph, double shiftX, double shiftY) {
     this.graph = copyGraph(graph!);
     reset();
@@ -147,7 +144,7 @@ class SugiyamaAlgorithm extends Algorithm {
 
         while (iterator.moveNext()) {
           final edge = iterator.current;
-          final dummy = Node(dummyText);
+          final dummy = Node.id(dummyText);
           final dummyNodeData = SugiyamaNodeData();
           dummyNodeData.isDummy = true;
           dummyNodeData.layer = indexNextLayer;
@@ -576,8 +573,8 @@ class SugiyamaAlgorithm extends Algorithm {
     }
   }
 
-  void horizontalCompactation(Map<Node?, Node?> align, Map<Node?, Node?> root, Map<Node?, Node?> sink,
-      Map<Node?, double> shift, Map<Node?, double> blockWidth, Map<Node?, double?> x, bool leftToRight, bool downward) {
+  void horizontalCompactation(Map<Node?, Node?> align, Map<Node?, Node?> root, Map<Node?, Node?> sink, Map<Node?, double> shift,
+      Map<Node?, double> blockWidth, Map<Node?, double?> x, bool leftToRight, bool downward) {
     // calculate class relative coordinates for all roots;
     var i = downward ? 0 : layers.length - 1;
     while (downward && i <= layers.length - 1 || !downward && i >= 0) {
@@ -628,8 +625,7 @@ class SugiyamaAlgorithm extends Algorithm {
       try {
         do {
           // if not first node on layer;
-          if (leftToRight && positionOfNode(w) > 0 ||
-              !leftToRight && positionOfNode(w) < layers[getLayerIndex(w)].length - 1) {
+          if (leftToRight && positionOfNode(w) > 0 || !leftToRight && positionOfNode(w) < layers[getLayerIndex(w)].length - 1) {
             final pred = predecessor(w, leftToRight);
             final u = root[pred];
             placeBlock(u, sink, shift, x, align, blockWidth, root, leftToRight);
@@ -638,11 +634,11 @@ class SugiyamaAlgorithm extends Algorithm {
             }
             if (sink[v] != sink[u]) {
               if (leftToRight) {
-                shift[sink[u]] = min(
-                    shift[sink[u]]!, x[v]! - x[u]! - configuration.nodeSeparation - 0.5 * (blockWidth[u]! + blockWidth[v]!));
+                shift[sink[u]] =
+                    min(shift[sink[u]]!, x[v]! - x[u]! - configuration.nodeSeparation - 0.5 * (blockWidth[u]! + blockWidth[v]!));
               } else {
-                shift[sink[u]] = max(
-                    shift[sink[u]]!, x[v]! - x[u]! + configuration.nodeSeparation + 0.5 * (blockWidth[u]! + blockWidth[v]!));
+                shift[sink[u]] =
+                    max(shift[sink[u]]!, x[v]! - x[u]! + configuration.nodeSeparation + 0.5 * (blockWidth[u]! + blockWidth[v]!));
               }
             } else {
               if (leftToRight) {
@@ -665,9 +661,7 @@ class SugiyamaAlgorithm extends Algorithm {
     final pos = positionOfNode(v);
     final rank = getLayerIndex(v);
     final level = layers[rank];
-    return (leftToRight && pos != 0 || !leftToRight && pos != level.length - 1)
-        ? level[(leftToRight) ? pos - 1 : pos + 1]
-        : null;
+    return (leftToRight && pos != 0 || !leftToRight && pos != level.length - 1) ? level[(leftToRight) ? pos - 1 : pos + 1] : null;
   }
 
   Node? virtualTwinNode(Node? node, bool downward) {
@@ -721,7 +715,11 @@ class SugiyamaAlgorithm extends Algorithm {
     for (var i = 0; i < k; i++) {
       var level = layers[i];
       level.forEach((node) {
-        var h = nodeData[node!]!.isDummy ? 0 : isVertical() ? node.height : node.width;
+        var h = nodeData[node!]!.isDummy
+            ? 0
+            : isVertical()
+                ? node.height
+                : node.width;
         if (h > height[i]) {
           height[i] = h.toInt();
         }
@@ -735,7 +733,7 @@ class SugiyamaAlgorithm extends Algorithm {
       level.forEach((node) {
         node!.y = yPos;
       });
-      if(i < k - 1) {
+      if (i < k - 1) {
         yPos += configuration.levelSeparation + 0.5 * (height[i] + height[i + 1]);
       }
     }
@@ -826,20 +824,20 @@ class SugiyamaAlgorithm extends Algorithm {
   Offset getPosition(Node node, Offset offset) {
     Offset finalOffset;
     switch (configuration.orientation) {
-      case 1:
+      case GraphOrientation.TopBottom:
         finalOffset = Offset(node.x - offset.dx, node.y);
         break;
-      case 2:
+      case GraphOrientation.BottomTop:
         finalOffset = Offset(node.x - offset.dx, offset.dy - node.y);
         break;
-      case 3:
+      case GraphOrientation.LeftRight:
         finalOffset = Offset(node.y, node.x - offset.dx);
         break;
-      case 4:
+      case GraphOrientation.RightLeft:
         finalOffset = Offset(offset.dy - node.y, node.x - offset.dx);
         break;
       default:
-        finalOffset = Offset(0,0);
+        finalOffset = Offset(0, 0);
         break;
     }
 
@@ -849,6 +847,7 @@ class SugiyamaAlgorithm extends Algorithm {
   @override
   void setFocusedNode(Node node) {}
 
+  @override
   void init(Graph? graph) {
     this.graph = copyGraph(graph!);
     reset();
@@ -858,12 +857,14 @@ class SugiyamaAlgorithm extends Algorithm {
     nodeOrdering(); //expensive operation
     coordinateAssignment(); //expensive operation
     // shiftCoordinates(shiftX, shiftY);
+    // ignore: unused_local_variable
     final graphSize = calculateGraphSize(this.graph);
     denormalize();
     restoreCycle();
     // shiftCoordinates(graph, shiftX, shiftY);
   }
 
+  @override
   void step(Graph? graph) {
     reset();
     initSugiyamaData();
@@ -872,11 +873,13 @@ class SugiyamaAlgorithm extends Algorithm {
     nodeOrdering(); //expensive operation
     coordinateAssignment(); //expensive operation
     // shiftCoordinates(shiftX, shiftY);
+    // ignore: unused_local_variable
     final graphSize = calculateGraphSize(this.graph);
     denormalize();
     restoreCycle();
   }
 
+  @override
   void setDimensions(double width, double height) {
     // graphWidth = width;
     // graphHeight = height;

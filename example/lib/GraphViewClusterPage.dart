@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:graphview/GraphView.dart';
+import 'package:graphview/graph_view.dart';
 
 class GraphClusterViewPage extends StatefulWidget {
   @override
@@ -29,8 +29,8 @@ class _GraphClusterViewPageState extends State<GraphClusterViewPage> {
                     ..style = PaintingStyle.fill,
                   builder: (Node node) {
                     // I can decide what widget should be shown here based on the id
-                    var a =  node.key.value as int;
-                    if(a == 2) {
+                    var a = node.key.value as int;
+                    if (a == 2) {
                       return rectangWidget(a);
                     }
                     return rectangWidget(a);
@@ -60,14 +60,16 @@ class _GraphClusterViewPageState extends State<GraphClusterViewPage> {
 
   @override
   void initState() {
-    final a = Node.Id(1);
-    final b = Node.Id(2);
-    final c = Node.Id(3);
-    final d = Node.Id(4);
-    final e = Node.Id(5);
-    final f = Node(rectangWidget(6)); //using deprecated mechanism of directly placing the widget here
-    final g = Node(rectangWidget(7));
-    final h = Node(rectangWidget(8));
+    super.initState();
+    final a = Node.id(1);
+    final b = Node.id(2);
+    final c = Node.id(3);
+    final d = Node.id(4);
+    final e = Node.id(5);
+    final f = Node.widget(rectangWidget(
+        6)); //using deprecated mechanism of directly placing the widget here
+    final g = Node.widget(rectangWidget(7));
+    final h = Node.widget(rectangWidget(8));
 
     graph.addEdge(a, b, paint: Paint()..color = Colors.red);
     graph.addEdge(a, c);

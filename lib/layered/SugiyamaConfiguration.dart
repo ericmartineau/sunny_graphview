@@ -1,18 +1,14 @@
 part of graphview;
 
 class SugiyamaConfiguration {
-  static const ORIENTATION_TOP_BOTTOM = 1;
-  static const ORIENTATION_BOTTOM_TOP = 2;
-  static const ORIENTATION_LEFT_RIGHT = 3;
-  static const ORIENTATION_RIGHT_LEFT = 4;
-  static const DEFAULT_ORIENTATION = 1;
+  static const DEFAULT_ORIENTATION = GraphOrientation.TopBottom;
 
   static const int X_SEPARATION = 100;
   static const int Y_SEPARATION = 100;
 
   int levelSeparation = Y_SEPARATION;
   int nodeSeparation = X_SEPARATION;
-  int orientation = DEFAULT_ORIENTATION;
+  GraphOrientation orientation = DEFAULT_ORIENTATION;
 
   int getLevelSeparation() {
     return levelSeparation;
@@ -22,7 +18,7 @@ class SugiyamaConfiguration {
     return nodeSeparation;
   }
 
-  int getOrientation() {
+  GraphOrientation getOrientation() {
     return orientation;
   }
 }
