@@ -1,0 +1,4 @@
+# melos_managed_dependency_overrides: sunny_graphview
+dependency_overrides:
+  sunny_graphview:
+    path: ..
