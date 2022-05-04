@@ -1,13 +1,13 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:graphview/graph_view.dart';
+import 'package:sunny_graphview/sunny_graphview.dart';
 
 class GraphScreen extends StatefulWidget {
   final Graph graph;
   final Algorithm algorithm;
-  final Paint paint;
-  GraphScreen(this.graph, this.algorithm, this.paint);
+  final Paint? paint;
+  GraphScreen(this.graph, this.algorithm, [this.paint]);
 
   @override
   _GraphScreenState createState() => _GraphScreenState();

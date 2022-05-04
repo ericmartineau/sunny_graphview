@@ -1,3 +1,15 @@
+## 1.3.0
+
+ - **FEAT**: publishing.
+
+## 1.2.0
+
+ - **FEAT**: publishing.
+
+## 1.1.0
+
+ - **FEAT**: publishing.
+
 ## 1.0.1
 
 ## 1.0.0-nullsafety.0

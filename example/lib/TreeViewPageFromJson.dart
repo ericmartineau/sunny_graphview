@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:graphview/graph_view.dart';
+import 'package:sunny_graphview/sunny_graphview.dart';
 
 class TreeViewPageFromJson extends StatefulWidget {
   @override
@@ -106,7 +106,7 @@ class _TreeViewPageFromJsonState extends State<TreeViewPageFromJson> {
                   var a = node.key.value as int;
                   var nodes = json['nodes'];
                   var nodeValue =
-                      nodes.firstWhere((element) => element['id'] == a);
+                      nodes!.firstWhere((element) => element['id'] == a);
                   return rectangleWidget(nodeValue['label'] as String);
                 },
               )),
@@ -125,7 +125,7 @@ class _TreeViewPageFromJsonState extends State<TreeViewPageFromJson> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
             boxShadow: [
-              BoxShadow(color: Colors.blue[100], spreadRadius: 1),
+              BoxShadow(color: Colors.blue[100]!, spreadRadius: 1),
             ],
           ),
           child: Text('${a}')),
@@ -139,7 +139,7 @@ class _TreeViewPageFromJsonState extends State<TreeViewPageFromJson> {
   void initState() {
     super.initState();
     var edges = json['edges'];
-    edges.forEach((element) {
+    edges!.forEach((element) {
       var fromNodeId = element['from'];
       var toNodeId = element['to'];
       graph.addEdge(Node.id(fromNodeId), Node.id(toNodeId));

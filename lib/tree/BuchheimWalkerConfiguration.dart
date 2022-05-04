@@ -1,16 +1,19 @@
-part of graphview;
+part of sunny_graphview;
 
 enum GraphOrientation { TopBottom, BottomTop, LeftRight, RightLeft }
 
 extension GraphOrientationExt on GraphOrientation {
-  bool get isForward => this == GraphOrientation.TopBottom || this == GraphOrientation.LeftRight;
+  bool get isForward =>
+      this == GraphOrientation.TopBottom || this == GraphOrientation.LeftRight;
   bool get isReverse => !isForward;
-  bool get isVertical => this == GraphOrientation.TopBottom || this == GraphOrientation.BottomTop;
+  bool get isVertical =>
+      this == GraphOrientation.TopBottom || this == GraphOrientation.BottomTop;
   bool get isHorizontal => !isVertical;
 }
 
 GraphOrientation orientationOf(int orientation) {
-  return GraphOrientation.values.firstWhere((element) => element.index == orientation);
+  return GraphOrientation.values
+      .firstWhere((element) => element.index == orientation);
 }
 
 class BuchheimWalkerConfiguration {

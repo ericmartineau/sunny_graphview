@@ -1,4 +1,4 @@
-part of graphview;
+part of sunny_graphview;
 
 class SugiyamaEdgeRenderer extends ArrowEdgeRenderer {
   Map<Node, SugiyamaNodeData> nodeData;

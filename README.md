@@ -161,7 +161,7 @@ class _TreeViewPageState extends State<TreeViewPage> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(4),
             boxShadow: [
-              BoxShadow(color: Colors.blue[100], spreadRadius: 1),
+              BoxShadow(color: Colors.blue[100]!, spreadRadius: 1),
             ],
           ),
           child: Text('Node ${a}')),
@@ -323,7 +323,7 @@ getNodeText() {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           boxShadow: [
-            BoxShadow(color: Colors.blue[100], spreadRadius: 1),
+            BoxShadow(color: Colors.blue[100]!, spreadRadius: 1),
           ],
         ),
         child: Text("Node ${n++}"));

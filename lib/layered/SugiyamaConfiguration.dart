@@ -1,4 +1,4 @@
-part of graphview;
+part of sunny_graphview;
 
 class SugiyamaConfiguration {
   static const DEFAULT_ORIENTATION = GraphOrientation.TopBottom;

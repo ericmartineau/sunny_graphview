@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:graphview/graph_view.dart';
+import 'package:sunny_graphview/sunny_graphview.dart';
 
 class GraphClusterViewPage extends StatefulWidget {
   @override
@@ -56,7 +56,7 @@ class _GraphClusterViewPageState extends State<GraphClusterViewPage> {
   }
 
   final Graph graph = Graph();
-  Algorithm builder;
+  late Algorithm builder;
 
   @override
   void initState() {

@@ -1,4 +1,4 @@
-part of graphview;
+part of sunny_graphview;
 
 class TreeEdgeRenderer extends EdgeRenderer {
   BuchheimWalkerConfiguration configuration;

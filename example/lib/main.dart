@@ -1,7 +1,7 @@
-import 'package:example/LayerGraphView.dart';
-import 'package:example/TreeViewPageFromJson.dart';
+import 'package:sunny_graphview_example/LayerGraphView.dart';
+import 'package:sunny_graphview_example/TreeViewPageFromJson.dart';
 import 'package:flutter/material.dart';
-import 'package:graphview/graph_view.dart';
+import 'package:sunny_graphview/sunny_graphview.dart';
 
 import 'GraphViewClusterPage.dart';
 import 'TreeViewPage.dart';
@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
 
 class Home extends StatelessWidget {
   const Home({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override
@@ -101,15 +101,21 @@ class Home extends StatelessWidget {
                   var node13 = Node.widget(createNode("Thirteen"));
 
                   graph.addEdge(node1, node2);
-                  graph.addEdge(node1, node3, paint: Paint()..color = Colors.red);
-                  graph.addEdge(node1, node4, paint: Paint()..color = Colors.blue);
+                  graph.addEdge(node1, node3,
+                      paint: Paint()..color = Colors.red);
+                  graph.addEdge(node1, node4,
+                      paint: Paint()..color = Colors.blue);
                   graph.addEdge(node2, node5);
                   graph.addEdge(node2, node6);
-                  graph.addEdge(node6, node7, paint: Paint()..color = Colors.red);
-                  graph.addEdge(node6, node8, paint: Paint()..color = Colors.red);
+                  graph.addEdge(node6, node7,
+                      paint: Paint()..color = Colors.red);
+                  graph.addEdge(node6, node8,
+                      paint: Paint()..color = Colors.red);
                   graph.addEdge(node4, node9);
-                  graph.addEdge(node4, node10, paint: Paint()..color = Colors.black);
-                  graph.addEdge(node4, node11, paint: Paint()..color = Colors.red);
+                  graph.addEdge(node4, node10,
+                      paint: Paint()..color = Colors.black);
+                  graph.addEdge(node4, node11,
+                      paint: Paint()..color = Colors.red);
                   graph.addEdge(node11, node12);
 
                   var builder1 = BuchheimWalkerConfiguration();
@@ -119,11 +125,14 @@ class Home extends StatelessWidget {
                     ..subtreeSeparation = (150)
                     ..orientation = GraphOrientation.TopBottom;
 
-                  var builder = BuchheimWalkerAlgorithm(builder1, TreeEdgeRenderer(builder1));
+                  var builder = BuchheimWalkerAlgorithm(
+                      builder1, TreeEdgeRenderer(builder1));
 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => GraphScreen(graph, builder, null)),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            GraphScreen(graph, builder, null)),
                   );
                 },
                 color: Colors.redAccent,
@@ -169,7 +178,9 @@ class Home extends StatelessWidget {
 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => GraphScreen(graph, builder, null)),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            GraphScreen(graph, builder, null)),
                   );
                 },
                 color: Colors.blueAccent,
@@ -224,7 +235,9 @@ class Home extends StatelessWidget {
 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => GraphScreen(graph, builder, null)),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            GraphScreen(graph, builder, null)),
                   );
                 },
                 color: Colors.green,
@@ -267,7 +280,9 @@ class Home extends StatelessWidget {
 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => GraphScreen(graph, builder, null)),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            GraphScreen(graph, builder, null)),
                   );
                 },
                 color: Colors.green,
@@ -313,7 +328,8 @@ class Home extends StatelessWidget {
                   final node22 = Node.widget(createNode("Ten12"));
                   final node23 = Node.widget(createNode("Ten10"));
 
-                  graph.addEdge(node1, node13, paint: Paint()..color = Colors.red);
+                  graph.addEdge(node1, node13,
+                      paint: Paint()..color = Colors.red);
                   graph.addEdge(node1, node21);
                   graph.addEdge(node1, node4);
                   graph.addEdge(node1, node3);
@@ -358,7 +374,9 @@ class Home extends StatelessWidget {
 
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => GraphScreen(graph, builder, null)),
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            GraphScreen(graph, builder, null)),
                   );
                 },
                 color: Colors.green,
@@ -398,7 +416,7 @@ class Home extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           boxShadow: [
-            BoxShadow(color: Colors.blue[100], spreadRadius: 1),
+            BoxShadow(color: Colors.blue[100]!, spreadRadius: 1),
           ],
         ),
         child: Text(nodeText));

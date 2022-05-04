@@ -1,4 +1,4 @@
-import 'package:example/LayerGraphView.dart';
+import 'package:sunny_graphview_example/LayerGraphView.dart';
 import 'package:flutter/material.dart';
 
 import 'GraphViewClusterPage.dart';
@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
 
 class Home extends StatelessWidget {
   const Home({
-    Key key,
+    Key? key,
   }) : super(key: key);
 
   @override

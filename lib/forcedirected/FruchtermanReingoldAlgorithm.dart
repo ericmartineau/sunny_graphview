@@ -1,4 +1,4 @@
-part of graphview;
+part of sunny_graphview;
 
 const int DEFAULT_ITERATIONS = 1000;
 const double REPULSION_RATE = 0.5;

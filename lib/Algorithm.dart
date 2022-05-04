@@ -1,4 +1,4 @@
-part of graphview;
+part of sunny_graphview;
 
 abstract class Algorithm {
   EdgeRenderer? renderer;
@@ -16,5 +16,4 @@ abstract class Algorithm {
   void step(Graph? graph);
 
   void setDimensions(double width, double height);
-
 }

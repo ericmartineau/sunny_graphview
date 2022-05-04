@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:graphview/graph_view.dart';
+import 'package:sunny_graphview/sunny_graphview.dart';
 
 class LayeredGraphViewPage extends StatefulWidget {
   @override
@@ -53,7 +53,8 @@ class _LayeredGraphViewPageState extends State<LayeredGraphViewPage> {
             ElevatedButton(
               onPressed: () {
                 final node12 = Node.widget(rectangleWidget(r.nextInt(100)));
-                var edge = graph.getNodeAtPosition(r.nextInt(graph.nodeCount()));
+                var edge =
+                    graph.getNodeAtPosition(r.nextInt(graph.nodeCount()));
                 print(edge);
                 graph.addEdge(edge, node12);
                 setState(() {});
@@ -94,7 +95,7 @@ class _LayeredGraphViewPageState extends State<LayeredGraphViewPage> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(4),
           boxShadow: [
-            BoxShadow(color: Colors.blue[100], spreadRadius: 1),
+            BoxShadow(color: Colors.blue[100]!, spreadRadius: 1),
           ],
         ),
         child: Text("Node ${a}"));
@@ -123,7 +124,8 @@ class _LayeredGraphViewPageState extends State<LayeredGraphViewPage> {
     final node14 = Node.id(14);
     final node15 = Node.id(15);
     final node16 = Node.id(16);
-    final node17 = Node.widget(rectangleWidget(17)); //using deprecated mechanism of directly placing the widget here
+    final node17 = Node.widget(rectangleWidget(
+        17)); //using deprecated mechanism of directly placing the widget here
     final node18 = Node.widget(rectangleWidget(18));
     final node19 = Node.widget(rectangleWidget(19));
     final node20 = Node.widget(rectangleWidget(20));
