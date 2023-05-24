@@ -1,16 +1,13 @@
 name: sunny_graphview
-description:  GraphView is used to display data in graph structures. It can display Tree layout, Directed and Layered graph. Useful for Family Tree, Hierarchy View.
 version: 1.3.0
-publish_to: https://dart.cloudsmith.io/edspuzzles/edspuzzle-public
 homepage: https://github.com/ericmartineau/sunny_graphview
-
-environment:
+publish_to: https://dart.cloudsmith.io/edspuzzles/edspuzzle-public
+description: GraphView is used to display data in graph structures. It can display Tree layout, Directed and Layered graph. Useful for Family Tree, Hierarchy View.
+environment: 
   sdk: '>=2.12.0 <3.0.0'
-  flutter: ">=1.17.0"
-
-dependencies:
-  flutter:
+  flutter: '>=1.17.0'
+dependencies: 
+  collection: ^1.17.1
+  flutter: 
     sdk: flutter
-  collection: ^1.15.0
-
-flutter:
+flutter: null
