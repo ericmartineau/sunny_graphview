@@ -1,9 +1,9 @@
 dependency_overrides: 
-  async: ^2.10.0
-  collection: ^1.17.1
+  async: ^2.11.0
+  collection: ^1.17.2
   js: ^0.6.7
-  meta: ^1.9.0
+  meta: ^1.9.1
   path: ^1.8.3
   provider: ^6.0.5
   sunny_graphview: 
-    path: /Users/ericm/reliveit/checkout/ericmartineau/sunny_graphview
+    path: /Users/ericm/aesthetika/checkout/ericmartineau/sunny_graphview

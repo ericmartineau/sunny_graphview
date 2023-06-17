@@ -9,7 +9,7 @@ dependencies:
   flutter: 
     sdk: flutter
   sunny_graphview: 
-    path: /Users/ericm/reliveit/checkout/ericmartineau/sunny_graphview
+    path: /Users/ericm/aesthetika/checkout/ericmartineau/sunny_graphview
 dev_dependencies: 
   flutter_test: 
     sdk: flutter
